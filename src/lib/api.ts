@@ -1,4 +1,4 @@
-import { Product } from '@/types/product';
+import { Product } from '@/src/types/product';
 
 const API_URL = 'https://fakestoreapi.com/products';
 
