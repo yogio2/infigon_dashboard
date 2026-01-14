@@ -5,10 +5,15 @@ import ProductGrid from '@/src/components/ProductGrid';
 import ErrorMessage from '@/src/components/ErrorMessage';
 import SearchBar from '@/src/components/SearchBar';
 import CategoryFilter from '@/src/components/CategoryFilter';
+import SortBar, { type SortType } from '@/src/components/SortBar';
+import Pagination from '@/src/components/Pagination';
+import ThemeToggle from '@/src/components/ThemeToggle';
 import ProductCard from '@/src/components/ProductCard';
 import { fetchProducts } from '@/src/lib/api';
 import { Product } from '@/src/types/product';
 import { useFavorites } from '@/src/hooks/useFavorites';
+
+const ITEMS_PER_PAGE = 8;
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -17,6 +22,8 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
   const [showFavoritesOnly, setShowFavoritesOnly] = useState(false);
+  const [sortBy, setSortBy] = useState<SortType>('price-asc');
+  const [currentPage, setCurrentPage] = useState(1);
   const { favorites, toggleFavorite, isFavorite, favoritesCount, isLoaded } = useFavorites();
 
   // Extract unique categories from products
@@ -38,6 +45,37 @@ export default function Home() {
       return matchesSearch && matchesCategory && matchesFavorites;
     });
   }, [products, searchTerm, selectedCategory, showFavoritesOnly, isFavorite]);
+
+  // Sort products based on sortBy state
+  const sortedProducts = useMemo(() => {
+    const sorted = [...filteredProducts];
+
+    switch (sortBy) {
+      case 'price-asc':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'rating-desc':
+        return sorted.sort((a, b) => (b.rating?.rate || 0) - (a.rating?.rate || 0));
+      case 'title-asc':
+        return sorted.sort((a, b) => a.title.localeCompare(b.title));
+      default:
+        return sorted;
+    }
+  }, [filteredProducts, sortBy]);
+
+  // Paginate products
+  const totalPages = Math.ceil(sortedProducts.length / ITEMS_PER_PAGE);
+  const paginatedProducts = useMemo(() => {
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    return sortedProducts.slice(startIndex, endIndex);
+  }, [sortedProducts, currentPage]);
+
+  // Reset to page 1 when filters or sort changes
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, showFavoritesOnly, sortBy]);
 
   useEffect(() => {
     loadProducts();
@@ -63,31 +101,36 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-base text-base">
       {/* Header - Responsive padding and layout */}
-      <div className="bg-white shadow-sm">
+      <div className="bg-card shadow-sm border-b border-base">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
                 Product Explorer
               </h1>
-              <p className="text-xs sm:text-sm text-gray-600 mt-2">
+              <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                 Browse our collection of products
               </p>
             </div>
-            {isLoaded && favoritesCount > 0 && (
-              <div className="text-right">
-                <p className="text-xs sm:text-sm text-gray-600">Favorites</p>
-                <p className="text-2xl sm:text-3xl font-bold text-red-500">{favoritesCount}</p>
-              </div>
-            )}
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:items-center sm:gap-6">
+              {/* Theme Toggle - No longer overlaps on mobile */}
+              <ThemeToggle />
+              {/* Favorites Count */}
+              {isLoaded && favoritesCount > 0 && (
+                <div className="text-right">
+                  <p className="text-xs sm:text-sm text-muted-foreground">Favorites</p>
+                  <p className="text-2xl sm:text-3xl font-bold text-destructive">{favoritesCount}</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 bg-base text-base">
         {error ? (
           <ErrorMessage
             title="Failed to Load Products"
@@ -102,12 +145,18 @@ export default function Home() {
                 {/* Search Bar */}
                 <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
 
-                {/* Category Filter */}
-                <CategoryFilter
-                  categories={categories}
-                  selectedCategory={selectedCategory}
-                  onCategoryChange={setSelectedCategory}
-                />
+                {/* Filters Grid - Category and Sort */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  {/* Category Filter */}
+                  <CategoryFilter
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={setSelectedCategory}
+                  />
+
+                  {/* Sort Bar */}
+                  <SortBar sortBy={sortBy} onSortChange={setSortBy} />
+                </div>
 
                 {/* Favorites Toggle and Results Count */}
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
@@ -116,8 +165,8 @@ export default function Home() {
                       onClick={() => setShowFavoritesOnly(!showFavoritesOnly)}
                       className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg font-medium text-sm sm:text-base transition-colors duration-200 flex items-center gap-2 min-h-10 sm:min-h-11 ${
                         showFavoritesOnly
-                          ? 'bg-red-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? 'bg-destructive text-destructive-foreground'
+                          : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
                       }`}
                       aria-pressed={showFavoritesOnly}
                     >
@@ -139,8 +188,8 @@ export default function Home() {
 
                   {/* Results Count - Responsive text */}
                   {(searchTerm || selectedCategory || showFavoritesOnly) && (
-                    <div className="text-xs sm:text-sm text-gray-600">
-                      Found <span className="font-semibold">{filteredProducts.length}</span>{' '}
+                    <div className="text-xs sm:text-sm text-muted-foreground">
+                      Found <span className="font-semibold text-foreground">{filteredProducts.length}</span>{' '}
                       product{filteredProducts.length !== 1 ? 's' : ''}
                     </div>
                   )}
@@ -151,25 +200,37 @@ export default function Home() {
             {/* Products Grid */}
             {isLoading ? (
               <ProductGrid products={[]} isLoading={true} />
-            ) : filteredProducts.length === 0 ? (
+            ) : paginatedProducts.length === 0 ? (
               <div className="text-center py-12 sm:py-16">
-                <p className="text-gray-500 text-base sm:text-lg">
+                <p className="text-muted-foreground text-base sm:text-lg">
                   {showFavoritesOnly
                     ? 'No favorite products yet. Start adding your favorites!'
                     : 'No products found matching your criteria.'}
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
-                {filteredProducts.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    isFavorite={isFavorite(product.id)}
-                    onToggleFavorite={toggleFavorite}
+              <>
+                {/* Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 md:gap-6">
+                  {paginatedProducts.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      isFavorite={isFavorite(product.id)}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                  ))}
+                </div>
+
+                {/* Pagination Controls */}
+                {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setCurrentPage}
                   />
-                ))}
-              </div>
+                )}
+              </>
             )}
           </>
         )}

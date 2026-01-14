@@ -18,9 +18,9 @@ export default function ProductCard({
 }: ProductCardProps) {
   return (
     <Link href={`/products/${product.id}`}>
-      <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full cursor-pointer relative group">
+      <div className="bg-card rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full cursor-pointer relative group border border-border">
         {/* Image Container - Responsive height */}
-        <div className="relative w-full h-40 sm:h-48 md:h-52 bg-gray-100 flex items-center justify-center overflow-hidden">
+        <div className="relative w-full h-40 sm:h-48 md:h-52 bg-secondary flex items-center justify-center overflow-hidden">
           <Image
             src={product.image}
             alt={product.title}
@@ -45,18 +45,18 @@ export default function ProductCard({
         {/* Content Container - Responsive padding */}
         <div className="p-3 sm:p-4 flex flex-col h-full">
           {/* Title - Responsive text size */}
-          <h3 className="text-xs sm:text-sm font-semibold text-gray-800 line-clamp-2 mb-2">
+          <h3 className="text-xs sm:text-sm font-semibold text-card-foreground line-clamp-2 mb-2">
             {product.title}
           </h3>
 
           {/* Category - Responsive text size */}
-          <p className="text-xs text-gray-500 uppercase tracking-wide mb-3">
+          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-3">
             {product.category}
           </p>
 
           {/* Price - Responsive text size */}
           <div className="mt-auto">
-            <p className="text-base sm:text-lg font-bold text-blue-600">
+            <p className="text-base sm:text-lg font-bold text-accent">
               ${product.price.toFixed(2)}
             </p>
           </div>

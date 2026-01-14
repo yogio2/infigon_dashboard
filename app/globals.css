@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+/* Design System CSS Variables - Light Mode */
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Colors - Base */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    
+    /* Colors - Card & Surfaces */
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    
+    /* Colors - Primary */
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    
+    /* Colors - Secondary */
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    
+    /* Colors - Accent */
+    --accent: 59 89% 51%;
+    --accent-foreground: 240 10% 3.9%;
+    
+    /* Colors - Muted */
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    
+    /* Colors - Status */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 71% 45%;
+    --warning: 38 92% 50%;
+    
+    /* Colors - Border & Input */
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+    
+    /* Radius */
+    --radius: 0.5rem;
+  }
+
+  /* Design System CSS Variables - Dark Mode */
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    
+    --accent: 59 89% 51%;
+    --accent-foreground: 240 10% 3.9%;
+    
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --success: 142 62% 45%;
+    --warning: 38 92% 50%;
+    
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+
+  /* Apply CSS variables to Tailwind theme */
+  body {
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Utilities for light/dark mode */
+@layer utilities {
+  .bg-base {
+    @apply bg-[hsl(var(--background))];
+  }
+  
+  .text-base {
+    @apply text-[hsl(var(--foreground))];
+  }
+  
+  .bg-card {
+    @apply bg-[hsl(var(--card))];
+  }
+  
+  .text-card {
+    @apply text-[hsl(var(--card-foreground))];
+  }
+  
+  .bg-primary {
+    @apply bg-[hsl(var(--primary))];
+  }
+  
+  .text-primary-foreground {
+    @apply text-[hsl(var(--primary-foreground))];
+  }
+  
+  .bg-secondary {
+    @apply bg-[hsl(var(--secondary))];
+  }
+  
+  .text-secondary-foreground {
+    @apply text-[hsl(var(--secondary-foreground))];
+  }
+
+  .bg-muted {
+    @apply bg-[hsl(var(--muted))];
+  }
+
+  .text-muted-foreground {
+    @apply text-[hsl(var(--muted-foreground))];
+  }
+  
+  .bg-accent {
+    @apply bg-[hsl(var(--accent))];
+  }
+  
+  .text-accent {
+    @apply text-[hsl(var(--accent-foreground))];
+  }
+
+  .bg-destructive {
+    @apply bg-[hsl(var(--destructive))];
+  }
+
+  .text-destructive {
+    @apply text-[hsl(var(--destructive))];
+  }
+
+  .text-destructive-foreground {
+    @apply text-[hsl(var(--destructive-foreground))];
+  }
+  
+  .border-base {
+    @apply border-[hsl(var(--border))];
+  }
+
+  .border-border {
+    @apply border-[hsl(var(--border))];
+  }
+
+  .border-input {
+    @apply border-[hsl(var(--input))];
+  }
+  
+  .ring-base {
+    @apply ring-[hsl(var(--ring))];
+  }
 }
+

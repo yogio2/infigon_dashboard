@@ -13,7 +13,7 @@ export default function CategoryFilter({
 }: CategoryFilterProps) {
   return (
     <div className="w-full">
-      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-3 sm:mb-4">
+      <label className="block text-xs sm:text-sm font-medium text-foreground mb-3 sm:mb-4">
         Filter by Category
       </label>
       <div className="flex flex-wrap gap-2 sm:gap-3">
@@ -22,8 +22,8 @@ export default function CategoryFilter({
           onClick={() => onCategoryChange('')}
           className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full font-medium text-sm sm:text-base transition-colors duration-200 min-h-10 sm:min-h-11 flex items-center ${
             selectedCategory === ''
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
           }`}
           aria-pressed={selectedCategory === ''}
         >
@@ -37,8 +37,8 @@ export default function CategoryFilter({
             onClick={() => onCategoryChange(category)}
             className={`px-3 sm:px-4 py-2 sm:py-2.5 rounded-full font-medium text-sm sm:text-base transition-colors duration-200 capitalize min-h-10 sm:min-h-11 flex items-center ${
               selectedCategory === category
-                ? 'bg-blue-600 text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? 'bg-primary text-primary-foreground'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
             }`}
             aria-pressed={selectedCategory === category}
           >
