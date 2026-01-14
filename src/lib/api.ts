@@ -13,9 +13,21 @@ export async function fetchProducts(): Promise<Product[]> {
     }
 
     const products: Product[] = await response.json();
+
+    // Validate that we received an array
+    if (!Array.isArray(products)) {
+      throw new Error('Invalid API response: expected an array of products');
+    }
+
+    // Check if data is empty
+    if (products.length === 0) {
+      throw new Error('No products available at the moment');
+    }
+
     return products;
   } catch (error) {
-    console.error('Failed to fetch products:', error);
-    throw error;
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+    console.error('Failed to fetch products:', errorMessage);
+    throw new Error(errorMessage);
   }
 }
