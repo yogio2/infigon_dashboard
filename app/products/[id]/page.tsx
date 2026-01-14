@@ -6,6 +6,7 @@ import ProductDetail from '@/src/components/ProductDetail';
 import ErrorMessage from '@/src/components/ErrorMessage';
 import { fetchProducts } from '@/src/lib/api';
 import { Product } from '@/src/types/product';
+import { useFavorites } from '@/src/hooks/useFavorites';
 
 export default function ProductPage() {
   const params = useParams();
@@ -14,6 +15,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { toggleFavorite, isFavorite } = useFavorites();
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -164,7 +166,11 @@ export default function ProductPage() {
   if (product) {
     return (
       <main className="min-h-screen bg-gray-50">
-        <ProductDetail product={product} />
+        <ProductDetail
+          product={product}
+          isFavorite={isFavorite(product.id)}
+          onToggleFavorite={toggleFavorite}
+        />
       </main>
     );
   }

@@ -3,12 +3,19 @@
 import { Product } from '@/src/types/product';
 import Image from 'next/image';
 import Link from 'next/link';
+import FavoriteButton from './FavoriteButton';
 
 interface ProductDetailProps {
   product: Product;
+  isFavorite?: boolean;
+  onToggleFavorite?: (productId: number) => void;
 }
 
-export default function ProductDetail({ product }: ProductDetailProps) {
+export default function ProductDetail({
+  product,
+  isFavorite = false,
+  onToggleFavorite,
+}: ProductDetailProps) {
   return (
     <div className="bg-white">
       {/* Back Button */}
@@ -52,11 +59,21 @@ export default function ProductDetail({ product }: ProductDetailProps) {
 
           {/* Product Information */}
           <div className="flex flex-col justify-start space-y-6">
-            {/* Category Badge */}
-            <div className="inline-block">
-              <span className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold uppercase">
-                {product.category}
-              </span>
+            {/* Header with Category and Favorite Button */}
+            <div className="flex items-start justify-between">
+              <div className="inline-block">
+                <span className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold uppercase">
+                  {product.category}
+                </span>
+              </div>
+              {onToggleFavorite && (
+                <FavoriteButton
+                  productId={product.id}
+                  isFavorite={isFavorite}
+                  onToggle={onToggleFavorite}
+                  size="lg"
+                />
+              )}
             </div>
 
             {/* Title */}

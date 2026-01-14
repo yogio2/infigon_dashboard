@@ -3,15 +3,22 @@
 import { Product } from '@/src/types/product';
 import Link from 'next/link';
 import Image from 'next/image';
+import FavoriteButton from './FavoriteButton';
 
 interface ProductCardProps {
   product: Product;
+  isFavorite?: boolean;
+  onToggleFavorite?: (productId: number) => void;
 }
 
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({
+  product,
+  isFavorite = false,
+  onToggleFavorite,
+}: ProductCardProps) {
   return (
     <Link href={`/products/${product.id}`}>
-      <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full cursor-pointer">
+      <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden h-full cursor-pointer relative group">
         {/* Image Container */}
         <div className="relative w-full h-48 bg-gray-100 flex items-center justify-center overflow-hidden">
           <Image
@@ -22,6 +29,17 @@ export default function ProductCard({ product }: ProductCardProps) {
             className="object-contain p-4"
             priority={false}
           />
+
+          {/* Favorite Button */}
+          {onToggleFavorite && (
+            <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <FavoriteButton
+                productId={product.id}
+                isFavorite={isFavorite}
+                onToggle={onToggleFavorite}
+              />
+            </div>
+          )}
         </div>
 
         {/* Content Container */}
