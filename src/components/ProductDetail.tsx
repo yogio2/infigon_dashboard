@@ -18,14 +18,14 @@ export default function ProductDetail({
 }: ProductDetailProps) {
   return (
     <div className="bg-white">
-      {/* Back Button */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      {/* Back Button - Responsive padding */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
         <Link
           href="/"
-          className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200"
+          className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 text-sm sm:text-base"
         >
           <svg
-            className="w-5 h-5 mr-2"
+            className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -41,12 +41,12 @@ export default function ProductDetail({
         </Link>
       </div>
 
-      {/* Product Detail Content */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-          {/* Product Image */}
-          <div className="flex items-center justify-center bg-gray-100 rounded-lg p-8">
-            <div className="relative w-full h-96">
+      {/* Product Detail Content - Responsive padding and layout */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 md:gap-12">
+          {/* Product Image - Responsive height and padding */}
+          <div className="flex items-center justify-center bg-gray-100 rounded-lg p-4 sm:p-6 md:p-8">
+            <div className="relative w-full h-72 sm:h-80 md:h-96">
               <Image
                 src={product.image}
                 alt={product.title}
@@ -57,12 +57,12 @@ export default function ProductDetail({
             </div>
           </div>
 
-          {/* Product Information */}
-          <div className="flex flex-col justify-start space-y-6">
+          {/* Product Information - Responsive spacing */}
+          <div className="flex flex-col justify-start space-y-4 sm:space-y-6">
             {/* Header with Category and Favorite Button */}
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-3">
               <div className="inline-block">
-                <span className="inline-block bg-blue-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold uppercase">
+                <span className="inline-block bg-blue-100 text-blue-800 px-3 sm:px-4 py-2 rounded-full text-xs sm:text-sm font-semibold uppercase">
                   {product.category}
                 </span>
               </div>
@@ -76,8 +76,8 @@ export default function ProductDetail({
               )}
             </div>
 
-            {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+            {/* Title - Responsive text size */}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 leading-tight">
               {product.title}
             </h1>
 
@@ -88,7 +88,7 @@ export default function ProductDetail({
                   {Array.from({ length: 5 }).map((_, i) => (
                     <svg
                       key={i}
-                      className={`w-5 h-5 ${
+                      className={`w-4 h-4 sm:w-5 sm:h-5 ${
                         i < Math.round(product.rating.rate)
                           ? 'text-yellow-400'
                           : 'text-gray-300'
@@ -100,32 +100,32 @@ export default function ProductDetail({
                     </svg>
                   ))}
                 </div>
-                <span className="text-gray-600">
-                  {product.rating.rate.toFixed(1)} ({product.rating.count} reviews)
+                <span className="text-xs sm:text-sm text-gray-600">
+                  {product.rating.rate.toFixed(1)} ({product.rating.count})
                 </span>
               </div>
             )}
 
-            {/* Price */}
-            <div className="py-4 border-t border-b border-gray-200">
-              <p className="text-sm text-gray-600 mb-2">Price</p>
-              <p className="text-4xl font-bold text-blue-600">
+            {/* Price - Responsive padding and text */}
+            <div className="py-4 sm:py-6 border-t border-b border-gray-200">
+              <p className="text-xs sm:text-sm text-gray-600 mb-2">Price</p>
+              <p className="text-3xl sm:text-4xl font-bold text-blue-600">
                 ${product.price.toFixed(2)}
               </p>
             </div>
 
-            {/* Description */}
+            {/* Description - Responsive text size */}
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-4">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-3 sm:mb-4">
                 Description
               </h2>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
                 {product.description}
               </p>
             </div>
 
-            {/* Add to Cart Button (Placeholder) */}
-            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200">
+            {/* Add to Cart Button - Touch-friendly size (≥44px) */}
+            <button className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3 sm:py-4 px-6 rounded-lg transition-colors duration-200 text-base sm:text-lg min-h-[44px] sm:min-h-[48px]">
               Add to Cart
             </button>
           </div>
