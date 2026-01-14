@@ -125,7 +125,7 @@ export default function ProductDetail({
             </div>
 
             {/* Add to Cart Button - Touch-friendly size (≥44px) */}
-            <button className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3 sm:py-4 px-6 rounded-lg transition-colors duration-200 text-base sm:text-lg min-h-[44px] sm:min-h-[48px]">
+            <button className="w-full bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold py-3 sm:py-4 px-6 rounded-lg transition-colors duration-200 text-base sm:text-lg min-h-11 sm:min-h-12">
               Add to Cart
             </button>
           </div>

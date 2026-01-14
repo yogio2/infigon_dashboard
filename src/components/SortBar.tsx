@@ -23,7 +23,7 @@ export default function SortBar({ sortBy, onSortChange }: SortBarProps) {
       <select
         value={sortBy}
         onChange={(e) => onSortChange(e.target.value as SortType)}
-        className="w-full px-4 py-2 sm:py-3 border border-input rounded-lg bg-card text-card-foreground text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent cursor-pointer hover:border-input transition-colors min-h-[44px] sm:min-h-[48px]"
+        className="w-full px-4 py-2 sm:py-3 border border-input rounded-lg bg-card text-card-foreground text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent cursor-pointer hover:border-input transition-colors min-h-11 sm:min-h-12"
       >
         {sortOptions.map((option) => (
           <option key={option.value} value={option.value}>
